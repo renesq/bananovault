@@ -38,12 +38,12 @@ export class UtilService {
     getAccountPublicKey: getAccountPublicKey,
   };
   nano = {
-    mnanoToRaw: mnanoToRaw,
-    knanoToRaw: knanoToRaw,
-    nanoToRaw: nanoToRaw,
-    rawToMnano: rawToMnano,
-    rawToKnano: rawToKnano,
-    rawToNano: rawToNano,
+    banToRaw: banToRaw,
+    mbanToRaw: mbanToRaw,
+    ubanToRaw: ubanToRaw,
+    rawToBan: rawToBan,
+    rawTomBan: rawTomBan,
+    rawTouBan: rawTouBan,
   };
 
 }
@@ -211,14 +211,14 @@ function getPublicAccountID(accountPublicKeyBytes) {
   const checksum = util.uint5.toString(util.uint4.toUint5(util.uint8.toUint4(blake.blake2b(keyBytes, null, 5).reverse())));
   const account = util.uint5.toString(util.uint4.toUint5(util.hex.toUint4(`0${accountHex}`)));
 
-  return `xrb_${account}${checksum}`;
+  return `ban_${account}${checksum}`;
 }
 
 function getAccountPublicKey(account) {
-  if ((!account.startsWith('xrb_1') && !account.startsWith('xrb_3')) || account.length !== 64) throw new Error(`Invalid NANO Account`);
+  if ((!account.startsWith('ban_1') && !account.startsWith('ban_3')) || account.length !== 64) throw new Error(`Invalid NANO Account`);
   const account_crop = account.substring(4,64);
   const isValid = /^[13456789abcdefghijkmnopqrstuwxyz]+$/.test(account_crop);
-  if (!isValid) throw new Error(`Invalid NANO account`);
+  if (!isValid) throw new Error(`Invalid BANANO account`);
 
   const key_uint4 = array_crop(uint5ToUint4(stringToUint5(account_crop.substring(0, 52))));
   const hash_uint4 = uint5ToUint4(stringToUint5(account_crop.substring(52, 60)));
@@ -233,26 +233,26 @@ function getAccountPublicKey(account) {
 /**
  * Conversion functions
  */
-const mnano = 1000000000000000000000000000000;
-const knano = 1000000000000000000000000000;
-const nano  = 1000000000000000000000000;
-function mnanoToRaw(value) {
-  return new BigNumber(value).times(mnano);
+const ban = 100000000000000000000000000000;
+const mban = 100000000000000000000000000;
+const uban  = 100000000000000000000000;
+function banToRaw(value) {
+  return new BigNumber(value).times(ban);
 }
-function knanoToRaw(value) {
-  return new BigNumber(value).times(knano);
+function mbanToRaw(value) {
+  return new BigNumber(value).times(mban);
 }
-function nanoToRaw(value) {
-  return new BigNumber(value).times(nano);
+function ubanToRaw(value) {
+  return new BigNumber(value).times(uban);
 }
-function rawToMnano(value) {
-  return new BigNumber(value).div(mnano);
+function rawToBan(value) {
+  return new BigNumber(value).div(ban);
 }
-function rawToKnano(value) {
-  return new BigNumber(value).div(knano);
+function rawTomBan(value) {
+  return new BigNumber(value).div(mban);
 }
-function rawToNano(value) {
-  return new BigNumber(value).div(nano);
+function rawTouBan(value) {
+  return new BigNumber(value).div(uban);
 }
 
 
@@ -307,11 +307,11 @@ const util = {
     getAccountPublicKey: getAccountPublicKey,
   },
   nano: {
-    mnanoToRaw: mnanoToRaw,
-    knanoToRaw: knanoToRaw,
-    nanoToRaw: nanoToRaw,
-    rawToMnano: rawToMnano,
-    rawToKnano: rawToKnano,
-    rawToNano: rawToNano,
+    banToRaw: banToRaw,
+    mbanToRaw: mbanToRaw,
+    ubanToRaw: ubanToRaw,
+    rawToBan: rawToBan,
+    rawTomBan: rawTomBan,
+    rawTouBan: rawTouBan,
   }
 };
