@@ -7,7 +7,7 @@ const nacl = window['nacl'];
 
 @Injectable()
 export class NanoBlockService {
-  representativeAccount = 'ban_3rw4un6ys57hrb39sy1qx8qy5wukst1iiponztrz9qiz6qqa55kxzx4491or'; // NanoVault Representative
+  representativeAccount = 'xrb_1wbxt1jh9pcbizrxqpy5x839ikayoz8384hgb5j4b369wmyp11igg45sjqi7'; // Standard mainnet Representative
 
   constructor(private api: ApiService, private util: UtilService, private workPool: WorkPoolService) { }
 
