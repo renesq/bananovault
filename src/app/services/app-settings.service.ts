@@ -13,7 +13,7 @@ export class AppSettingsService {
   storeKey = `nanovault-appsettings`;
 
   settings: AppSettings = {
-    displayDenomination: 'mnano',
+    displayDenomination: 'ban',
     walletStore: 'localStorage',
     displayCurrency: 'USD',
     lockOnClose: 1,
