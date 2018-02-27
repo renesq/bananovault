@@ -21,7 +21,7 @@ const nacl = window['nacl'];
   styleUrls: ['./send.component.css']
 })
 export class SendComponent implements OnInit {
-  nano = 1000000000000000000000000;
+  nano = 100000000000000000000000; // 10^23 actually microBAN
 
   activePanel = 'send';
 
@@ -31,9 +31,9 @@ export class SendComponent implements OnInit {
   addressBookMatch = '';
 
   amounts = [
-    { name: 'NANO (1 Mnano)', shortName: 'NANO', value: 'mnano' },
-    { name: 'knano (0.001 Mnano)', shortName: 'knano', value: 'knano' },
-    { name: 'nano (0.000001 Mnano)', shortName: 'nano', value: 'nano' },
+    { name: 'BAN (10^29 raw)', shortName: 'BAN', value: 'ban' },
+    { name: 'mBAN (10^26 raw)', shortName: 'mBAN', value: 'mban' },
+    { name: 'uBAN (10^23 raw)', shortName: 'uBAN', value: 'uban' },
   ];
   selectedAmount = this.amounts[0];
 
@@ -143,7 +143,7 @@ export class SendComponent implements OnInit {
     if (from.balanceBN.minus(rawAmount).lessThan(0)) return this.notificationService.sendError(`From account does not have enough XRB`);
 
     // Determine fiat value of the amount
-    this.amountFiat = this.util.nano.rawToMnano(rawAmount).times(this.price.price.lastPrice).toNumber();
+    this.amountFiat = this.util.nano.rawToBan(rawAmount).times(this.price.price.lastPrice).toNumber();
 
     // Start precopmuting the work...
     this.fromAddressBook = this.addressBookService.getAccountName(this.fromAccountID);
@@ -220,8 +220,8 @@ export class SendComponent implements OnInit {
 
     this.amountRaw = walletAccount.balanceRaw;
 
-    const nanoVal = this.util.nano.rawToNano(walletAccount.balance).floor();
-    const maxAmount = this.getAmountValueFromBase(this.util.nano.nanoToRaw(nanoVal));
+    const nanoVal = this.util.nano.rawTouBan(walletAccount.balance).floor();
+    const maxAmount = this.getAmountValueFromBase(this.util.nano.ubanToRaw(nanoVal));
     this.amount = maxAmount.toNumber();
   }
 
@@ -233,18 +233,18 @@ export class SendComponent implements OnInit {
 
     switch (this.selectedAmount.value) {
       default:
-      case 'nano': return this.util.nano.nanoToRaw(value);
-      case 'knano': return this.util.nano.knanoToRaw(value);
-      case 'mnano': return this.util.nano.mnanoToRaw(value);
+      case 'uban': return this.util.nano.ubanToRaw(value);
+      case 'mban': return this.util.nano.mbanToRaw(value);
+      case 'ban': return this.util.nano.banToRaw(value);
     }
   }
 
   getAmountValueFromBase(value) {
     switch (this.selectedAmount.value) {
       default:
-      case 'nano': return this.util.nano.rawToNano(value);
-      case 'knano': return this.util.nano.rawToKnano(value);
-      case 'mnano': return this.util.nano.rawToMnano(value);
+      case 'uban': return this.util.nano.rawTouBan(value);
+      case 'mban': return this.util.nano.rawTomBan(value);
+      case 'ban': return this.util.nano.rawToBan(value);
     }
   }
 
