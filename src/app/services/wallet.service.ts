@@ -520,7 +520,7 @@ export class WalletService {
       this.successfulBlocks.push(nextBlock.hash);
 
       const receiveAmount = this.util.nano.rawToBan(nextBlock.amount);
-      this.notifications.sendSuccess(`Successfully received ${receiveAmount.toFixed(6)} Nano!`);
+      this.notifications.sendSuccess(`Successfully received ${receiveAmount.toFixed(6)} Banano!`);
 
       // await this.promiseSleep(500); // Give the node a chance to make sure its ready to reload all?
       await this.reloadBalances();
