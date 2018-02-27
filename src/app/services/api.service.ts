@@ -122,23 +122,23 @@ export class ApiService {
   }
 
 
-  async kraiToRaw(amount): Promise<{ amount: string, error?: string }> {
-    return await this.request('krai_to_raw', { amount });
+  async mbanToRaw(amount): Promise<{ amount: string, error?: string }> {
+    return await this.request('mban_to_raw', { amount });
   }
-  async kraiFromRaw(amount): Promise<{ amount: string, error?: string }> {
-    return await this.request('krai_from_raw', { amount });
+  async mbanFromRaw(amount): Promise<{ amount: string, error?: string }> {
+    return await this.request('mban_from_raw', { amount });
   }
-  async mraiToRaw(amount): Promise<{ amount: string, error?: string }> {
-    return await this.request('mrai_to_raw', { amount });
+  async banToRaw(amount): Promise<{ amount: string, error?: string }> {
+    return await this.request('ban_to_raw', { amount });
   }
-  async mraiFromRaw(amount): Promise<{ amount: string, error?: string }> {
-    return await this.request('mrai_from_raw', { amount });
+  async banFromRaw(amount): Promise<{ amount: string, error?: string }> {
+    return await this.request('ban_from_raw', { amount });
   }
-  async raiToRaw(amount): Promise<{ amount: string, error?: string }> {
-    return await this.request('rai_to_raw', { amount });
+  async ubanToRaw(amount): Promise<{ amount: string, error?: string }> {
+    return await this.request('uban_to_raw', { amount });
   }
-  async raiFromRaw(amount): Promise<{ amount: string, error?: string }> {
-    return await this.request('rai_from_raw', { amount });
+  async ubanFromRaw(amount): Promise<{ amount: string, error?: string }> {
+    return await this.request('uban_from_raw', { amount });
   }
 
 
