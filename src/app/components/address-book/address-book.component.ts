@@ -1,70 +1,98 @@
-import { Component, OnInit } from '@angular/core';
-import {AddressBookService} from "../../services/address-book.service";
-import {WalletService} from "../../services/wallet.service";
-import {NotificationService} from "../../services/notification.service";
-import {ModalService} from "../../services/modal.service";
-import {ApiService} from "../../services/api.service";
+<div class="uk-animation-slide-left-small" uk-grid>
+  <div class="uk-width-1-1">
+    <div uk-grid>
+      <div class="uk-width-1-2">
+        <h2>Address Book</h2>
+      </div>
+      <div class="uk-width-1-2 uk-text-right">
+        <button class="uk-button uk-button-secondary" (click)="activePanel = 1">Create New Address</button>
+      </div>
+    </div>
+    <p>
+      You can use the address book to store a label for your own accounts and others you frequently transact with, which are visible throughout the application.
+    </p>
 
-@Component({
-  selector: 'app-address-book',
-  templateUrl: './address-book.component.html',
-  styleUrls: ['./address-book.component.css']
-})
-export class AddressBookComponent implements OnInit {
 
-  activePanel = 0;
+    <div class="uk-animation-slide-left-small" *ngIf="activePanel == 0" uk-grid>
+      <div class="uk-width-1-1">
+        <div class="uk-card uk-card-default uk-margin">
+          <table class="uk-table uk-table-striped uk-table-small">
+            <thead>
+            <tr>
+              <th class="uk-width-2-5">Name</th>
+              <th class="uk-width-3-6">Account ID</th>
+              <th class="uk-width-1-6 uk-text-center">Options</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let addressBook of addressBook$ | async">
+              <td>{{ addressBook.name }} </td>
+              <td class="uk-visible-toggle">
+                <div uk-grid>
+                  <div class="uk-width-expand uk-text-truncate">
+                    <a [routerLink]="'/account/' + addressBook.account" class="uk-link-text" title="View Account Details" uk-tooltip>
+                      {{ addressBook.account }}
+                    </a>
+                  </div>
+                  <div class="uk-width-auto" style="padding-left: 10px;">
+                    <ul class="uk-hidden-hover uk-iconnav">
+                      <li><a ngxClipboard [cbContent]="addressBook.account" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a></li>
+                    </ul>
+                  </div>
+                </div>
+              </td>
+              <td class="uk-text-center">
+                <a (click)="deleteAddress(addressBook.account)" class="uk-text-danger" title="Delete From Address Book" uk-tooltip><span uk-icon="icon: trash;"></span></a>
+              </td>
+            </tr>
+            <tr *ngIf="!(addressBook$ | async).length">
+              <td colspan="3" style="text-align: center;">
+                You do not have any address book entries saved yet, <a (click)="activePanel = 1">click here to create one</a>.
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
 
-  addressBook$ = this.addressBookService.addressBook$;
-  newAddressAccount = '';
-  newAddressName = '';
+    <div class="uk-animation-slide-left-small" *ngIf="activePanel == 1" uk-grid>
+      <div class="uk-width-1-1">
+        <div class="uk-card uk-card-default">
+          <div class="uk-card-header">
+            <h2 class="uk-card-title">Create New Address</h2>
+          </div>
+          <div class="uk-card-body">
+            <div class="uk-form-horizontal">
+              <div class="uk-margin">
+                <label class="uk-form-label" for="new-address-account">Account ID</label>
+                <div class="uk-form-controls">
+                  <input type="text" class="uk-input" id="new-address-account" [(ngModel)]="newAddressAccount" placeholder="ban_abc123">
+                </div>
+              </div>
 
-  constructor(private addressBookService: AddressBookService, private walletService: WalletService, private notificationService: NotificationService, public modal: ModalService, private nodeApi: ApiService) { }
+              <div class="uk-margin">
+                <label class="uk-form-label" for="new-address-name">Account Name</label>
+                <div class="uk-form-controls">
+                  <input type="text" class="uk-input" id="new-address-name" [(ngModel)]="newAddressName" placeholder="Exchange Deposit Address, Main Trading Account, etc">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="uk-card-footer">
+            <div uk-grid>
+              <div class="uk-width-1-2@s uk-text-left">
+                <button class="uk-button uk-button-danger uk-width-1-1" (click)="cancelNewAddress()">Cancel</button>
+              </div>
+              <div class="uk-width-1-2@s uk-text-right">
+                <button class="uk-button uk-button-primary uk-width-1-1" (click)="saveNewAddress()">Save New Address</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-  async ngOnInit() {
-    const book = await this.addressBookService.loadAddressBook();
-  }
 
-  async saveNewAddress() {
-    if (!this.newAddressAccount || !this.newAddressName) return this.notificationService.sendError(`Account and name are required`);
-
-    this.newAddressAccount = this.newAddressAccount.replace(/ /g, ''); // Remove spaces
-
-    // Make sure name doesn't exist
-    if (this.addressBookService.nameExists(this.newAddressName)) {
-      return this.notificationService.sendError(`This name is already in use!  Please use a unique name`);
-    }
-
-    // Make sure the address is valid
-    const valid = await this.nodeApi.validateAccountNumber(this.newAddressAccount);
-    if (!valid || valid.valid !== '1') return this.notificationService.sendWarning(`Account ID is not a valid account`);
-
-    try {
-      await this.addressBookService.saveAddress(this.newAddressAccount, this.newAddressName);
-      this.notificationService.sendSuccess(`Successfully created new name for account!`);
-      // IF this is one of our accounts, set its name, and hope things update?
-      const walletAccount = this.walletService.wallet.accounts.find(a => a.id.toLowerCase() === this.newAddressAccount.toLowerCase());
-      if (walletAccount) {
-        walletAccount.addressBookName = this.newAddressName;
-      }
-      this.cancelNewAddress();
-    } catch (err) {
-      this.notificationService.sendError(`Unable to save entry: ${err.message}`)
-    }
-  }
-
-  cancelNewAddress() {
-    this.newAddressName = '';
-    this.newAddressAccount = '';
-    this.activePanel = 0;
-  }
-
-  async deleteAddress(account) {
-    try {
-      await this.addressBookService.deleteAddress(account);
-      this.notificationService.sendSuccess(`Successfully deleted address book entry`)
-    } catch (err) {
-      this.notificationService.sendError(`Unable to delete entry: ${err.message}`)
-    }
-  }
-
-}
+  </div>
+</div>
