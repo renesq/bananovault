@@ -13,9 +13,9 @@ export class ConfigureAppComponent implements OnInit {
   wallet = this.walletService.wallet;
 
   denominations = [
-    { name: 'NANO (1 Mnano)', value: 'mnano' },
-    { name: 'knano (0.001 Mnano)', value: 'knano' },
-    { name: 'nano (0.000001 Mnano)', value: 'nano' },
+    { name: 'BAN (10^29 raw)', value: 'ban' },
+    { name: 'mBAN (10^26 raw)', value: 'mban' },
+    { name: 'uBAN (10^23 raw)', value: 'uban' },
   ];
   selectedDenomination = this.denominations[0].value;
 
