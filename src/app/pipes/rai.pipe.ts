@@ -27,7 +27,8 @@ export class RaiPipe implements PipeTransform {
           return `${(value / this.mrai).toFixed(2)}${!hideText ? ' EUR': ''}`;
     }
   }
-
+  }
+  
   toFixed(num, fixed) {
     if (isNaN(num)) return 0;
     var re = new RegExp('^-?\\d+(?:\.\\d{0,' + (fixed || -1) + '})?');
