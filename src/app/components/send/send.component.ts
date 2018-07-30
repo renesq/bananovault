@@ -12,7 +12,7 @@ import {WorkPoolService} from "../../services/work-pool.service";
 import {AppSettingsService} from "../../services/app-settings.service";
 import {ActivatedRoute, ActivatedRouteSnapshot} from "@angular/router";
 import {PriceService} from "../../services/price.service";
-import {NanoBlockService} from "../../services/nano-block.service";
+import {NOSBlockService} from "../../services/nano-block.service";
 
 const nacl = window['nacl'];
 
@@ -32,9 +32,9 @@ export class SendComponent implements OnInit {
   addressBookMatch = '';
 
   amounts = [
-    { name: 'NANO (1 Mnano)', shortName: 'NANO', value: 'mnano' },
-    { name: 'knano (0.001 Mnano)', shortName: 'knano', value: 'knano' },
-    { name: 'nano (0.000001 Mnano)', shortName: 'nano', value: 'nano' },
+    { name: 'Euro', shortName: 'EUR', value: 'mnano' },
+    
+    
   ];
   selectedAmount = this.amounts[0];
 
@@ -57,7 +57,7 @@ export class SendComponent implements OnInit {
     private addressBookService: AddressBookService,
     private notificationService: NotificationService,
     private nodeApi: ApiService,
-    private nanoBlock: NanoBlockService,
+    private nanoBlock: NOSBlockService,
     public price: PriceService,
     private workPool: WorkPoolService,
     public settings: AppSettingsService,
@@ -88,7 +88,7 @@ export class SendComponent implements OnInit {
     }
   }
 
-  // An update to the Nano amount, sync the fiat value
+  // An update to the NOS amount, sync the fiat value
   syncFiatPrice() {
     const rawAmount = this.getAmountBaseValue(this.amount || 0).plus(this.amountRaw);
     if (rawAmount.lte(0)) {
@@ -105,10 +105,10 @@ export class SendComponent implements OnInit {
   }
 
   // An update to the fiat amount, sync the nano value based on currently selected denomination
-  syncNanoPrice() {
+  syncNOSPrice() {
     const fiatAmount = this.amountFiat || 0;
     const rawAmount = this.util.nano.mnanoToRaw(new BigNumber(fiatAmount).div(this.price.price.lastPrice));
-    const nanoVal = this.util.nano.rawToNano(rawAmount).floor();
+    const nanoVal = this.util.nano.rawToNOS(rawAmount).floor();
     const nanoAmount = this.getAmountValueFromBase(this.util.nano.nanoToRaw(nanoVal));
 
     this.amount = nanoAmount.toNumber();
@@ -236,7 +236,7 @@ export class SendComponent implements OnInit {
 
     this.amountRaw = walletAccount.balanceRaw;
 
-    const nanoVal = this.util.nano.rawToNano(walletAccount.balance).floor();
+    const nanoVal = this.util.nano.rawToNOS(walletAccount.balance).floor();
     const maxAmount = this.getAmountValueFromBase(this.util.nano.nanoToRaw(nanoVal));
     this.amount = maxAmount.toNumber();
     this.syncFiatPrice();
@@ -259,7 +259,7 @@ export class SendComponent implements OnInit {
   getAmountValueFromBase(value) {
     switch (this.selectedAmount.value) {
       default:
-      case 'nano': return this.util.nano.rawToNano(value);
+      case 'nano': return this.util.nano.rawToNOS(value);
       case 'knano': return this.util.nano.rawToKnano(value);
       case 'mnano': return this.util.nano.rawToMnano(value);
     }

@@ -6,7 +6,7 @@ import {AddressBookService} from "./address-book.service";
 import * as CryptoJS from 'crypto-js';
 import {WorkPoolService} from "./work-pool.service";
 import {WebsocketService} from "./websocket.service";
-import {NanoBlockService} from "./nano-block.service";
+import {NOSBlockService} from "./nano-block.service";
 import {NotificationService} from "./notification.service";
 import {AppSettingsService} from "./app-settings.service";
 import {PriceService} from "./price.service";
@@ -47,7 +47,7 @@ export interface FullWallet {
 @Injectable()
 export class WalletService {
   nano = 1000000000000000000000000;
-  storeKey = `nanovault-wallet`;
+  storeKey = `noswallet-wallet`;
 
   wallet: FullWallet = {
     type: 'seed',
@@ -77,7 +77,7 @@ export class WalletService {
     private price: PriceService,
     private workPool: WorkPoolService,
     private websocket: WebsocketService,
-    private nanoBlock: NanoBlockService,
+    private nanoBlock: NOSBlockService,
     private ledgerService: LedgerService,
     private notifications: NotificationService)
   {
@@ -228,7 +228,7 @@ export class WalletService {
     const exportData = this.generateExportData();
     const base64Data = btoa(JSON.stringify(exportData));
 
-    return `https://nanovault.io/import-wallet#${base64Data}`;
+    return `https://my.nos.cash/import-wallet#${base64Data}`;
   }
 
   lockWallet() {
@@ -678,7 +678,7 @@ export class WalletService {
       this.successfulBlocks.push(nextBlock.hash);
 
       const receiveAmount = this.util.nano.rawToMnano(nextBlock.amount);
-      this.notifications.sendSuccess(`Successfully received ${receiveAmount.isZero() ? '' : receiveAmount.toFixed(6)} Nano!`);
+      this.notifications.sendSuccess(`Successfully received ${receiveAmount.isZero() ? '' : receiveAmount.toFixed(6)} NOS!`);
 
       // await this.promiseSleep(500); // Give the node a chance to make sure its ready to reload all?
       await this.reloadBalances();

@@ -1,9 +1,9 @@
 // nano-webgl-pow
-// Nano Currency Proof of Work Value generation using WebGL2
+// NOS Currency Proof of Work Value generation using WebGL2
 // Author:  numtel <ben@latenightsketches.com>
 // License: MIT
 
-// window.NanoWebglPow(hashHex, callback, progressCallback);
+// window.NOSWebglPow(hashHex, callback, progressCallback);
 // @param hashHex           String   Previous Block Hash as Hex String
 // @param callback          Function Called when work value found
 //   Receives single string argument, work value as hex
@@ -32,8 +32,8 @@ function hex_reverse(hex) {
 function calculate(hashHex, callback, progressCallback) {
   const canvas = document.createElement('canvas');
 
-  canvas.width = window.NanoWebglPow.width;
-  canvas.height = window.NanoWebglPow.height;
+  canvas.width = window.NOSWebglPow.width;
+  canvas.height = window.NOSWebglPow.height;
 
   const gl = canvas.getContext('webgl2');
 
@@ -321,11 +321,11 @@ function calculate(hashHex, callback, progressCallback) {
   window.requestAnimationFrame(draw);
 }
 
-window.NanoWebglPow = calculate;
+window.NOSWebglPow = calculate;
 // Both width and height must be multiple of 256, (one byte)
 // but do not need to be the same,
 // matching GPU capabilities is the aim
-window.NanoWebglPow.width = 256 * 2;
-window.NanoWebglPow.height = 256 * 2;
+window.NOSWebglPow.width = 256 * 2;
+window.NOSWebglPow.height = 256 * 2;
 
 })();

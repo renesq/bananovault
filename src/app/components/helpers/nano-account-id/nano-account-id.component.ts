@@ -5,7 +5,7 @@ import {Component, Input, OnInit} from '@angular/core';
   templateUrl: './nano-account-id.component.html',
   styleUrls: ['./nano-account-id.component.css']
 })
-export class NanoAccountIdComponent implements OnInit {
+export class NOSAccountIdComponent implements OnInit {
 
   @Input('accountID') accountID: string;
 

@@ -11,7 +11,7 @@ function createWindow () {
   // Create the browser window.
   mainWindow = new BrowserWindow({width: 1000, height: 600, webPreferences: { webSecurity: false } });
   // const options = { extraHeaders: "pragma: no-cache\n" };
-  // mainWindow.loadURL('https://nanovault.io', options);
+  // mainWindow.loadURL('https://my.nos.cash', options);
   // mainWindow.loadURL('http://localhost:4200/');
   mainWindow.loadURL(url.format({
     pathname: path.join(__dirname, 'dist/index.html'),
@@ -126,20 +126,20 @@ function getApplicationMenu() {
       submenu: [
         {
           label: 'View GitHub',
-          click () { loadExternal('https://github.com/cronoh/nanovault') }
+          click () { loadExternal('https://github.com/NOS-Cash/NOSvault') }
         },
         {
           label: 'Submit Issue',
-          click () { loadExternal('https://github.com/cronoh/nanovault/issues/new') }
+          click () { loadExternal('https://github.com/NOS-Cash/NOSvault/issues/new') }
         },
         {type: 'separator'},
         {
           type: 'normal',
-          label: `NanoVault Version: ${autoUpdater.currentVersion}`,
+          label: `NOSwallet Version: ${autoUpdater.currentVersion}`,
         },
         {
           label: 'View Latest Updates',
-          click () { loadExternal('https://github.com/cronoh/nanovault/releases') }
+          click () { loadExternal('https://github.com/NOS-Cash/NOSvault/releases') }
         },
         {type: 'separator'},
         {
@@ -154,7 +154,7 @@ function getApplicationMenu() {
 
   if (process.platform === 'darwin') {
     template.unshift({
-      label: 'NanoVault',
+      label: 'NOSwallet',
       submenu: [
         {role: 'about'},
         {type: 'separator'},

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import Nano from "hw-app-nano";
+import NOS from "hw-app-nano";
 import TransportU2F from "@ledgerhq/hw-transport-u2f";
 import {Subject} from "rxjs/Subject";
 import {ApiService} from "./services/api.service";
@@ -84,7 +84,7 @@ export class LedgerService {
       // Load nano object
       if (!this.ledger.nano) {
         try {
-          this.ledger.nano = new Nano(this.ledger.transport);
+          this.ledger.nano = new NOS(this.ledger.transport);
         } catch (err) {
           if (err.statusText == 'UNKNOWN_ERROR') {
             this.resetLedger();
@@ -105,7 +105,7 @@ export class LedgerService {
         this.ledger.status = LedgerStatus.NOT_CONNECTED;
         this.ledgerStatus$.next(this.ledger.status);
         if (!hideNotifications) {
-          this.notifications.sendWarning(`Unable to connect to the Ledger device.  Make sure it is unlocked and the Nano application is open`);
+          this.notifications.sendWarning(`Unable to connect to the Ledger device.  Make sure it is unlocked and the NOS application is open`);
         }
         resolved = true;
         return resolve(false);
@@ -125,7 +125,7 @@ export class LedgerService {
           this.resetLedger();
         }
         if (!hideNotifications && !resolved) {
-          this.notifications.sendWarning(`Ledger device locked.  Unlock and open the Nano application`);
+          this.notifications.sendWarning(`Ledger device locked.  Unlock and open the NOS application`);
         }
         return resolve(false);
       }
@@ -143,7 +143,7 @@ export class LedgerService {
       } catch (err) {
         if (err.statusCode === STATUS_CODES.SECURITY_STATUS_NOT_SATISFIED) {
           if (!hideNotifications) {
-            this.notifications.sendWarning(`Ledger device locked.  Unlock and open the Nano application`);
+            this.notifications.sendWarning(`Ledger device locked.  Unlock and open the NOS application`);
           }
         }
       }

@@ -1,8 +1,8 @@
 {
-  "name": "NanoVault",
+  "name": "NOSwallet",
   "version": "1.0.4",
   "license": "MIT",
-  "description": "Wallet for interacting with Nano",
+  "description": "Wallet for interacting with NOS",
   "author": "Andrew Steele",
   "main": "main.js",
   "scripts": {
@@ -81,9 +81,9 @@
     "uikit": "^3.0.0-beta.40"
   },
   "build": {
-    "appId": "com.electron.nanovault",
+    "appId": "com.electron.noswallet",
     "buildVersion": "1.0.4",
-    "productName": "NanoVault",
+    "productName": "NOSwallet",
     "copyright": "Copyright © 2018 Andrew Steele",
     "directories": {
       "output": "dist-desktop",
@@ -109,7 +109,7 @@
       {
         "provider": "github",
         "owner": "cronoh",
-        "repo": "nanovault"
+        "repo": "noswallet"
       }
     ],
     "protocols": {

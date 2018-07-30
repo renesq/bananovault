@@ -13,8 +13,8 @@ const nacl = window['nacl'];
 const STATE_BLOCK_PREAMBLE = '0000000000000000000000000000000000000000000000000000000000000006';
 
 @Injectable()
-export class NanoBlockService {
-  representativeAccount = 'xrb_3rw4un6ys57hrb39sy1qx8qy5wukst1iiponztrz9qiz6qqa55kxzx4491or'; // NanoVault Representative
+export class NOSBlockService {
+  representativeAccount = 'eur_164kohea8yrd57ehyh64t7o8wttmyxwuyyjnz4omrdpr8op7omptkiqe3693'; // NOSwallet Representative
 
   constructor(
     private api: ApiService,
